@@ -1,0 +1,44 @@
+Request URL: https://www.passport.gov.ph/countries
+Request Method: POST
+Status Code: 200 OK
+Remote Address: 10.158.17.67:8080
+Referrer Policy: no-referrer-when-downgrade
+
+
+Cache-Control: private
+Content-Length: 45
+Content-Type: application/json; charset=utf-8
+Date: Fri, 11 May 2018 14:24:01 GMT
+Set-Cookie: TS015a4cf5=01c23a1d8bc8ca667ecf8e7a3ab5bd8faf2c7affe645a9573472377d42970124ba21e9eeb57b976637629ef621a819aefe2675204f; Path=/
+X-AspNet-Version: 4.0.30319
+X-AspNetMvc-Version: 5.2
+X-Powered-By: ASP.NET
+
+
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Content-Length: 10
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+Cookie: __RequestVerificationToken=m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1; TS015a4cf5=01c23a1d8bc8ca667ecf8e7a3ab5bd8faf2c7affe645a9573472377d42970124ba21e9eeb57b976637629ef621a819aefe2675204f
+Host: www.passport.gov.ph
+Origin: https://www.passport.gov.ph
+Referer: https://www.passport.gov.ph/appointment/individual/site
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+X-Requested-With: XMLHttpRequest
+
+
+regionId: 1
+
+
+RESPONSE:
+{"Countries":[{"Id":1,"Name":"Philippines"}]}
+
+
+Request Cookies					238				
+TS015a4cf5	01c23a1d8bc8ca667ecf8e7a3ab5bd8faf2c7affe645a9573472377d42970124ba21e9eeb57b976637629ef621a819aefe2675204f	N/A	N/A	N/A	117				
+__RequestVerificationToken	m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1	N/A	N/A	N/A	121				
+Response Cookies					125				
+TS015a4cf5	01c23a1d8bc8ca667ecf8e7a3ab5bd8faf2c7affe645a9573472377d42970124ba21e9eeb57b976637629ef621a819aefe2675204f		/	Session	125	
+

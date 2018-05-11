@@ -1,0 +1,43 @@
+Request URL: https://www.passport.gov.ph/appointment/individual/schedule
+Request Method: GET
+Status Code: 200 OK
+Remote Address: 10.158.17.67:8080
+Referrer Policy: no-referrer-when-downgrade
+
+
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Encoding: gzip
+Content-Length: 50799
+Content-Type: text/html; charset=utf-8
+Date: Fri, 11 May 2018 14:32:24 GMT
+Expires: -1
+Pragma: no-cache
+Set-Cookie: TS015a4cf5=01c23a1d8be749521f057bb7c5e77b95fba41ca9e3d2ef7086e4efc28fe3e2a78afc0eeedcf020acdc864a17e0b4e1d9b4835620a9d6ef23e3e3bb9d15fef89a9f997d8eda; Path=/
+Vary: Accept-Encoding
+X-AspNet-Version: 4.0.30319
+X-AspNetMvc-Version: 5.2
+X-Frame-Options: SAMEORIGIN
+X-Powered-By: ASP.NET
+
+
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Cache-Control: max-age=0
+Connection: keep-alive
+Cookie: __RequestVerificationToken=m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1; ASP.NET_SessionId=iufoe51rkaj5mcavizxbxqn0; TS015a4cf5=01c23a1d8be749521f057bb7c5e77b95fba41ca9e3d2ef7086e4efc28fe3e2a78afc0eeedcf020acdc864a17e0b4e1d9b4835620a9d6ef23e3e3bb9d15fef89a9f997d8eda
+Host: www.passport.gov.ph
+Referer: https://www.passport.gov.ph/appointment/individual/site
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+
+
+RESPONSE: html
+
+
+Request Cookies					314				
+ASP.NET_SessionId	iufoe51rkaj5mcavizxbxqn0	N/A	N/A	N/A	44				
+TS015a4cf5	01c23a1d8be749521f057bb7c5e77b95fba41ca9e3d2ef7086e4efc28fe3e2a78afc0eeedcf020acdc864a17e0b4e1d9b4835620a9d6ef23e3e3bb9d15fef89a9f997d8eda	N/A	N/A	N/A	149				
+__RequestVerificationToken	m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1	N/A	N/A	N/A	121				
+Response Cookies					157				
+TS015a4cf5	01c23a1d8be749521f057bb7c5e77b95fba41ca9e3d2ef7086e4efc28fe3e2a78afc0eeedcf020acdc864a17e0b4e1d9b4835620a9d6ef23e3e3bb9d15fef89a9f997d8eda		/	Session	157	

@@ -1,0 +1,44 @@
+Request URL: https://www.passport.gov.ph/appointment/individual/schedule
+Request Method: GET
+Status Code: 200 OK
+Remote Address: 10.158.17.67:8080
+Referrer Policy: no-referrer-when-downgrade
+
+
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Encoding: gzip
+Content-Length: 47414
+Content-Type: text/html; charset=utf-8
+Date: Fri, 11 May 2018 15:15:12 GMT
+Expires: -1
+Pragma: no-cache
+Set-Cookie: TS015a4cf5=01c23a1d8b78d0d1830424031c8e28017cc9466ebc7da298586409665b87cab0e5cdf35282157d1b3086f84cae27cc2b55fab8d185aff4018861b81cb5e9265c4b5381fcaa; Path=/
+Vary: Accept-Encoding
+X-AspNet-Version: 4.0.30319
+X-AspNetMvc-Version: 5.2
+X-Frame-Options: SAMEORIGIN
+X-Powered-By: ASP.NET
+
+
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Cache-Control: max-age=0
+Connection: keep-alive
+Cookie: __RequestVerificationToken=m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1; ASP.NET_SessionId=iufoe51rkaj5mcavizxbxqn0; TS015a4cf5_77=083cab9cc7ab280000ed3a3dd6b8db4f4d55fc61c72f0fe5e610bfe726893dc6af731e924741b387cf9da1eafd7e3a1e0888b56dca823800dbeaac29e1f62bf131ea3c02b20d0d86bdfd538a54f1c1e0b79ab83388a8569d4a8003f12571d236ec8b6ab4272fc8c52d9523094b06c1b3; TS015a4cf5=01c23a1d8b78d0d1830424031c8e28017cc9466ebc7da298586409665b87cab0e5cdf35282157d1b3086f84cae27cc2b55fab8d185aff4018861b81cb5e9265c4b5381fcaa
+Host: www.passport.gov.ph
+Referer: https://www.passport.gov.ph/appointment/individual/site
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+
+
+RESPONSE: html
+
+
+Request Cookies					554				
+ASP.NET_SessionId	iufoe51rkaj5mcavizxbxqn0	N/A	N/A	N/A	44				
+TS015a4cf5	01c23a1d8b78d0d1830424031c8e28017cc9466ebc7da298586409665b87cab0e5cdf35282157d1b3086f84cae27cc2b55fab8d185aff4018861b81cb5e9265c4b5381fcaa	N/A	N/A	N/A	149				
+TS015a4cf5_77	083cab9cc7ab280000ed3a3dd6b8db4f4d55fc61c72f0fe5e610bfe726893dc6af731e924741b387cf9da1eafd7e3a1e0888b56dca823800dbeaac29e1f62bf131ea3c02b20d0d86bdfd538a54f1c1e0b79ab83388a8569d4a8003f12571d236ec8b6ab4272fc8c52d9523094b06c1b3	N/A	N/A	N/A	240				
+__RequestVerificationToken	m4u_CEGy_1W-n459RodMoSQn6D8HlaEQ1NwmNDe9NTv-TmhFtI2wsa6JNba4Qp1qgJMIeIJV3Im_jp-73WzpKX8Ku-Q1	N/A	N/A	N/A	121				
+Response Cookies					157				
+TS015a4cf5	01c23a1d8b78d0d1830424031c8e28017cc9466ebc7da298586409665b87cab0e5cdf35282157d1b3086f84cae27cc2b55fab8d185aff4018861b81cb5e9265c4b5381fcaa		/	Session	157	

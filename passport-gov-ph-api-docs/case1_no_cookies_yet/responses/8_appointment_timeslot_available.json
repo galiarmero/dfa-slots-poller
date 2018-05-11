@@ -1,30 +1,6 @@
 [
     {
         "IsAvailable": false,
-        "AppointmentDate": 1525737600000
-    },
-    {
-        "IsAvailable": false,
-        "AppointmentDate": 1525824000000
-    },
-    {
-        "IsAvailable": false,
-        "AppointmentDate": 1525910400000
-    },
-    {
-        "IsAvailable": false,
-        "AppointmentDate": 1525996800000
-    },
-    {
-        "IsAvailable": false,
-        "AppointmentDate": 1526083200000
-    },
-    {
-        "IsAvailable": false,
-        "AppointmentDate": 1526342400000
-    },
-    {
-        "IsAvailable": false,
         "AppointmentDate": 1526428800000
     },
     {
