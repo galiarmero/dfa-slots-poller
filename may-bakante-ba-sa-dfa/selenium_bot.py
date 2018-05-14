@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 class SeleniumBot(object):
     def __init__(self):
-        self._session = requests.Session();
+        self._session = requests.Session()
         executable_path = os.path.abspath(
             os.path.join(os.getcwd(), 'chromedriver.exe'))
         try:
@@ -21,29 +21,36 @@ class SeleniumBot(object):
     def run(self):
         try:
             self._driver.get('https://www.passport.gov.ph/appointment/individual/site')
-            page_source = self._driver.page_source
-            soup = BeautifulSoup(page_source, 'html.parser')
-            token = soup.find_all('input', attrs={'name': '__RequestVerificationToken'})
 
-            cookies = self._get_driver_cookies()
             res = self._session.post('https://www.passport.gov.ph/countries', data={'regionId': 1})
             countries_json = res.json()
-            ph_country_id_list = [ country['Id'] for country in countries_json['Countries'] \
-                                                if country['Name'] == 'Philippines' ]
-            ph_country_id = 0 if not ph_country_id_list else ph_country_id_list[0]
-            
+            ph_country_id = self._get_ph_country_id(countries_json['Countries'])
             
             res = self._session.post('https://www.passport.gov.ph/sites', \
-                                        data={'regionId': 1, 'countryId': ph_country_id})
+                        data={'regionId': 1, 'countryId': ph_country_id})
             sites_json = res.json()
 
-            self._check_slot_availability(sites_json['Sites'])
-        except ValueError as err:
-            print(err.msg)
-        except NoSuchWindowException:
+
+            res = self._session.post('https://www.passport.gov.ph/appointment/individual/site', \
+                    data={'__RequestVerificationToken': self._get_request_verif_token_field(), \
+                            'HasForeignPassport': False,  'OffsetTicks': 0, 'SiteRegionID': 1, \
+                            'SiteCountryID': 1, 'SiteID': 24, 'NextStep': 'schedule', \
+                            'CurrentStep': 'site', 'submitcommand': 'next'}, \
+                    cookies=self._get_driver_cookies())
+            
+            print(self._session.cookies.get_dict())
+            res = self._session.post('https://www.passport.gov.ph/appointment/timeslot/available/next', \
+                        data={'requestDate': '2018-05-12', 'maxDate': '2018-09-30', 'siteId': 24, 'slots': 1}, \
+                        cookies=self._get_driver_cookies())
+            print(self._session.cookies.get_dict())
+            print(res.text)
+        except ValueError as ex:
+            print("{}: {}".format(type(ex).__name__, ex))
+        except NoSuchWindowException as ex:
             print("Hooman closed the browser.")
-        except WebDriverException as err:
-            print(err.msg)
+            print("{}: {}".format(type(ex).__name__, ex))
+        except WebDriverException as ex:
+            print("{}: {}".format(type(ex).__name__, ex))
 
     
     def _check_slot_availability(self, sites):
@@ -56,7 +63,19 @@ class SeleniumBot(object):
                 self._driver.find_element_by_xpath("//button[@type='submit' and @value='next']").click()
 
             except NoSuchElementException as ex:
-                print(ex.msg)
+                print("{}: {}".format(type(ex).__name__, ex))
+
+    
+    def _get_ph_country_id(self, countries):
+        ph_country_id_list = [ country['Id'] for country in countries \
+                                            if country['Name'] == 'Philippines' ]
+        return 0 if not ph_country_id_list else ph_country_id_list[0]
+
+
+    def _get_request_verif_token_field(self):
+        page_source = self._driver.page_source
+        soup = BeautifulSoup(page_source, 'html.parser')
+        return soup.find('input', attrs={'name': '__RequestVerificationToken'})['value']
 
 
     def _get_driver_cookies(self):
