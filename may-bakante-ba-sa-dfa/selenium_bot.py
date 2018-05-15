@@ -27,7 +27,7 @@ class SeleniumBot(object):
             ph_country_id = self._get_ph_country_id(countries_json['Countries'])
             
             res = self._session.post('https://www.passport.gov.ph/sites', \
-                        data={'regionId': 1, 'countryId': ph_country_id})
+                    data={'regionId': 1, 'countryId': ph_country_id})
             sites_json = res.json()
 
 
@@ -35,15 +35,20 @@ class SeleniumBot(object):
                     data={'__RequestVerificationToken': self._get_request_verif_token_field(), \
                             'HasForeignPassport': False,  'OffsetTicks': 0, 'SiteRegionID': 1, \
                             'SiteCountryID': 1, 'SiteID': 24, 'NextStep': 'schedule', \
-                            'CurrentStep': 'site', 'submitcommand': 'next'}, \
-                    cookies=self._get_driver_cookies())
+                            'CurrentStep': 'site', 'submitcommand': 'next'})
+
+
+            schedule_xhr_headers = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Origin': 'https://www.passport.gov.ph',
+                'Referer': 'https://www.passport.gov.ph/appointment/individual/schedule'
+            }
+
             
-            print(self._session.cookies.get_dict())
             res = self._session.post('https://www.passport.gov.ph/appointment/timeslot/available/next', \
-                        data={'requestDate': '2018-05-12', 'maxDate': '2018-09-30', 'siteId': 24, 'slots': 1}, \
-                        cookies=self._get_driver_cookies())
-            print(self._session.cookies.get_dict())
-            print(res.text)
+                    data={'requestDate': '2018-05-16', 'maxDate': '2018-09-30', 'siteId': 24, 'slots': 1}, \
+                    headers=schedule_xhr_headers)
+
         except ValueError as ex:
             print("{}: {}".format(type(ex).__name__, ex))
         except NoSuchWindowException as ex:
@@ -51,19 +56,6 @@ class SeleniumBot(object):
             print("{}: {}".format(type(ex).__name__, ex))
         except WebDriverException as ex:
             print("{}: {}".format(type(ex).__name__, ex))
-
-    
-    def _check_slot_availability(self, sites):
-        site_option_xpath_pattern = "//select[@id='SiteID']/option[@value={}]"
-        for site in sites:
-            try:
-                print("Checking site {} - {}".format(site['Id'], site['Name']))
-                site_option_xpath = site_option_xpath_pattern.format(site['Id'])
-                self._driver.find_element_by_xpath(site_option_xpath).click()
-                self._driver.find_element_by_xpath("//button[@type='submit' and @value='next']").click()
-
-            except NoSuchElementException as ex:
-                print("{}: {}".format(type(ex).__name__, ex))
 
     
     def _get_ph_country_id(self, countries):
