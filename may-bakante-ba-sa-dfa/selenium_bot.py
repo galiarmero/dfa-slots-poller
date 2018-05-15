@@ -48,6 +48,13 @@ class SeleniumBot(object):
             res = self._session.post('https://www.passport.gov.ph/appointment/timeslot/available/next', \
                     data={'requestDate': '2018-05-16', 'maxDate': '2018-09-30', 'siteId': 24, 'slots': 1}, \
                     headers=schedule_xhr_headers)
+            next_available_timeslot_json = res.json();
+
+            res = self._session.post('https://www.passport.gov.ph/appointment/timeslot/available', \
+                    data={'fromDate': '2018-05-16', 'toDate': '2019-01-20', 'siteId': 24, 'requestedSlots': 1}, \
+                    headers=schedule_xhr_headers)
+            timeslots_availbility = res.json()
+
 
         except ValueError as ex:
             print("{}: {}".format(type(ex).__name__, ex))
