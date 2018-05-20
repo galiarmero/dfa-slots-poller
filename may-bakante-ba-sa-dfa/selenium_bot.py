@@ -25,12 +25,14 @@ class SeleniumBot(object):
         try:
             ph_country_id = self._get_ph_country_id()
             sites = self._get_sites(ph_country_id)
-            next_available_timeslot = self._get_next_available_timeslot( \
-                '2018-05-16', '2019-05-16', 24)
-            timeslots_availability = self._get_timeslots_availability( \
-                '2018-05-16', '2019-05-16', 24)
             
-            print(next_available_timeslot, timeslots_availability)
+            for site in sites:
+                site_id = site['Id']
+                next_available_timeslot = self._get_next_available_timeslot( \
+                    '2018-05-16', '2019-05-16', site_id)
+                timeslots_availability = self._get_timeslots_availability( \
+                    '2018-05-16', '2019-05-16', site_id)
+                print(site['Name'], ':', next_available_timeslot)
 
         except Exception as ex:
             print("{}: {}".format(type(ex).__name__, ex))
