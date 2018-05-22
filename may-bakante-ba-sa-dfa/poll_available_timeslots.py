@@ -1,5 +1,3 @@
-import os
-import sys
 import requests
 import datetime
 
@@ -17,12 +15,12 @@ SCHEDULE_XHR_HEADERS = {
     'Referer': 'https://www.passport.gov.ph/appointment/individual/schedule'
 }
 
-class SeleniumBot(object):
+class PollAvailableTimeslots(object):
     def __init__(self):
         self._session = requests.Session()
 
 
-    def run(self):
+    def execute(self):
         try:
             ph_country_id = self._get_ph_country_id()
             sites = self._get_sites(ph_country_id)
@@ -75,7 +73,3 @@ class SeleniumBot(object):
     def _millis_to_date(self, millis):
         return datetime.datetime.fromtimestamp(millis / 1000.0) \
                                 .strftime('%a, %b %d %Y %I:%M %p')
-
-if __name__ == "__main__":
-    bot = SeleniumBot()
-    bot.run()
