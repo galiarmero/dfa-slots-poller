@@ -1,11 +1,9 @@
+import json
 import requests
 import datetime
+from constants import SITES_JSON
 
 
-APAC_REGION_ID = 1 # Asia Pacific
-
-COUNTRIES_URI = 'https://www.passport.gov.ph/countries'
-SITES_URI = 'https://www.passport.gov.ph/sites'
 NEXT_AVAILABLE_TIMESLOT_URI = 'https://www.passport.gov.ph/appointment/timeslot/available/next'
 AVAILABLE_TIMESLOT_URI = 'https://www.passport.gov.ph/appointment/timeslot/available'
 
@@ -22,8 +20,7 @@ class PollAvailableTimeslots(object):
 
     def execute(self):
         try:
-            ph_country_id = self._get_ph_country_id()
-            sites = self._get_sites(ph_country_id)
+            sites = self._load_sites()
             
             for site in sites:
                 site_id = site['Id']
@@ -40,19 +37,10 @@ class PollAvailableTimeslots(object):
         except Exception as ex:
             print("{}: {}".format(type(ex).__name__, ex))
 
-    
-    def _get_ph_country_id(self):
-        res = self._session.post(COUNTRIES_URI, data={'regionId': APAC_REGION_ID})
-        countries = res.json()['Countries']
-        ph_country_id_list = [ country['Id'] for country in countries \
-                                            if country['Name'] == 'Philippines' ]
-        return 0 if not ph_country_id_list else ph_country_id_list[0]
 
-
-    def _get_sites(self, country_id):
-        res = self._session.post(SITES_URI, \
-                data={'regionId': APAC_REGION_ID, 'countryId': country_id})
-        return res.json()['Sites']
+    def _load_sites(self):
+        with open(SITES_JSON) as datafile:
+            return json.load(datafile)
 
 
     def _get_next_available_timeslot(self, from_date, to_date, site_id):
@@ -69,6 +57,7 @@ class PollAvailableTimeslots(object):
                 headers=SCHEDULE_XHR_HEADERS).json()
 
         return [ self._millis_to_date(t['AppointmentDate']) for t in timeslots if t['IsAvailable'] ]
+
 
     def _millis_to_date(self, millis):
         return datetime.datetime.fromtimestamp(millis / 1000.0) \
