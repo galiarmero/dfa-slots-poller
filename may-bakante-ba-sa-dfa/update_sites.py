@@ -42,8 +42,3 @@ class UpdateSites(object):
         res = self._session.post(SITES_URI, \
                 data={'regionId': APAC_REGION_ID, 'countryId': country_id})
         return res.json()['Sites']
-
-
-if __name__ == "__main__":
-    update_sites = UpdateSites()
-    update_sites.execute()
