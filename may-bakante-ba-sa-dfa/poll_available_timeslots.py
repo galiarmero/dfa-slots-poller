@@ -4,7 +4,6 @@ import datetime
 from constants import SITES_JSON
 
 
-NEXT_AVAILABLE_TIMESLOT_URI = 'https://www.passport.gov.ph/appointment/timeslot/available/next'
 AVAILABLE_TIMESLOT_URI = 'https://www.passport.gov.ph/appointment/timeslot/available'
 
 SCHEDULE_XHR_HEADERS = {
@@ -26,11 +25,8 @@ class PollAvailableTimeslots(object):
             self._timeslot_availability = []
 
             for site in sites:
-                query_params = (current_date, year_after_date, site['Id'])
-                next_available_timeslot = self._get_next_available_timeslot(*query_params)
-                available_timeslots = self._get_timeslots_availability(*query_params)
-
-                process_data(site['Name'], next_available_timeslot, available_timeslots)
+                available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
+                process_data(site['Name'], available_timeslots)
 
             if not print_mode:
                 # TODO: Save in database
@@ -40,18 +36,16 @@ class PollAvailableTimeslots(object):
             print("{}: {}".format(type(ex).__name__, ex))
 
 
-    def _aggregate_data(self, site_name, next_available_timeslot, available_timeslots):
+    def _aggregate_data(self, site_name, available_timeslots):
         self._timeslot_availability.append({
             'siteName': site_name,
-            'nextAvailable': next_available_timeslot,
-            'available': available_timeslots
+            'availableTimeslots': available_timeslots
         })
 
 
-    def _print_data(self, site_name, next_available_timeslot, available_timeslots):
+    def _print_data(self, site_name, available_timeslots):
         print()
         print(site_name)
-        print(' > Next Available: {}'.format(self._millis_to_date(next_available_timeslot)))
         print(' > Available ({})'.format(len(available_timeslots)))
 
         if len(available_timeslots):
@@ -61,14 +55,6 @@ class PollAvailableTimeslots(object):
     def _load_sites(self):
         with open(SITES_JSON) as datafile:
             return json.load(datafile)
-
-
-    def _get_next_available_timeslot(self, from_date, to_date, site_id):
-        next_available = self._session.post(NEXT_AVAILABLE_TIMESLOT_URI, \
-                data={'requestDate': from_date, 'maxDate': to_date, 'siteId': site_id, 'slots': 1}, \
-                headers=SCHEDULE_XHR_HEADERS).json()
-
-        return next_available['Date'] if 'Date' in next_available else None
 
 
     def _get_timeslots_availability(self, from_date, to_date, site_id):
