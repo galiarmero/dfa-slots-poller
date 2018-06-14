@@ -9,6 +9,8 @@ if __name__ == "__main__":
                     "DFA's Passport Appointment System")
     parser.add_argument('-u', '--update-sites', action='store_true', \
         help="Update the stored list of DFA sites before checking available timeslots")
+    parser.add_argument('-p', '--print-mode', action='store_true', \
+        help="Print available timeslots in console instead of saving in database")
     args = parser.parse_args()
 
     if args.update_sites:
@@ -16,4 +18,4 @@ if __name__ == "__main__":
         update_sites.execute()
 
     poll_slots = PollAvailableTimeslots()
-    poll_slots.execute()
+    poll_slots.execute(args.print_mode)

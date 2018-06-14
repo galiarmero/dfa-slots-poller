@@ -18,24 +18,44 @@ class PollAvailableTimeslots(object):
         self._session = requests.Session()
 
 
-    def execute(self):
+    def execute(self, print_mode):
         try:
             sites = self._load_sites()
-            
-            for site in sites:
-                site_id = site['Id']
-                next_available_timeslot = self._get_next_available_timeslot( \
-                    '2018-05-16', '2019-05-16', site_id)
-                available_timeslots = self._get_timeslots_availability( \
-                    '2018-05-16', '2019-05-16', site_id)
+            current_date, year_after_date = self._get_from_to_dates()
+            process_data = self._print_data if print_mode else self._aggregate_data
+            self._timeslot_availability = []
 
-                print(site['Name'])
-                print(' > Next Available  : {}'.format(next_available_timeslot))
-                print(' > Available {0:5s} : {1}'.format( \
-                    '({})'.format(len(available_timeslots)), available_timeslots))
+            for site in sites:
+                query_params = (current_date, year_after_date, site['Id'])
+                next_available_timeslot = self._get_next_available_timeslot(*query_params)
+                available_timeslots = self._get_timeslots_availability(*query_params)
+
+                process_data(site['Name'], next_available_timeslot, available_timeslots)
+
+            if not print_mode:
+                # TODO: Save in database
+                print(self._timeslot_availability)
 
         except Exception as ex:
             print("{}: {}".format(type(ex).__name__, ex))
+
+
+    def _aggregate_data(self, site_name, next_available_timeslot, available_timeslots):
+        self._timeslot_availability.append({
+            'siteName': site_name,
+            'nextAvailable': next_available_timeslot,
+            'available': available_timeslots
+        })
+
+
+    def _print_data(self, site_name, next_available_timeslot, available_timeslots):
+        print()
+        print(site_name)
+        print(' > Next Available: {}'.format(self._millis_to_date(next_available_timeslot)))
+        print(' > Available ({})'.format(len(available_timeslots)))
+
+        if len(available_timeslots):
+            print('    {}'.format('\n    '.join([ self._millis_to_date(a) for a in available_timeslots])))
 
 
     def _load_sites(self):
@@ -48,7 +68,7 @@ class PollAvailableTimeslots(object):
                 data={'requestDate': from_date, 'maxDate': to_date, 'siteId': site_id, 'slots': 1}, \
                 headers=SCHEDULE_XHR_HEADERS).json()
 
-        return self._millis_to_date(next_available['Date']) if 'Date' in next_available else None
+        return next_available['Date'] if 'Date' in next_available else None
 
 
     def _get_timeslots_availability(self, from_date, to_date, site_id):
@@ -56,9 +76,18 @@ class PollAvailableTimeslots(object):
                 data={'fromDate': from_date, 'toDate': to_date, 'siteId': site_id, 'requestedSlots': 1}, \
                 headers=SCHEDULE_XHR_HEADERS).json()
 
-        return [ self._millis_to_date(t['AppointmentDate']) for t in timeslots if t['IsAvailable'] ]
+        return [ t['AppointmentDate'] for t in timeslots if t['IsAvailable'] ]
+
+
+    def _get_from_to_dates(self):
+        today = datetime.date.today()
+        return today.strftime('%Y-%m-%d'), \
+                (today + datetime.timedelta(days=365)).strftime('%Y-%m-%d')
 
 
     def _millis_to_date(self, millis):
-        return datetime.datetime.fromtimestamp(millis / 1000.0) \
-                                .strftime('%a, %b %d %Y %I:%M %p')
+        try:
+            return datetime.datetime.fromtimestamp(millis / 1000.0) \
+                                    .strftime('%a, %b %d %Y %I:%M %p')
+        except TypeError:
+            return None
