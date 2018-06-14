@@ -2,6 +2,7 @@ import json
 import requests
 import datetime
 import time
+import argparse
 from constants import SITES_JSON
 
 
@@ -46,7 +47,7 @@ class PollAvailableTimeslots(object):
         })
 
 
-    def _print_data(self, site_name, available_timeslots):
+    def _print_data(self, site_name, available_timeslots, collection_time):
         print()
         print(site_name)
         print(' > Available ({})'.format(len(available_timeslots)))
@@ -80,3 +81,14 @@ class PollAvailableTimeslots(object):
                                     .strftime('%a, %b %d %Y %I:%M %p')
         except TypeError:
             return None
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser( \
+        description="Poll available timeslots from DFA's Passport Appointment System")
+    parser.add_argument('-p', '--print-mode', action='store_true', \
+        help="Print available timeslots in console instead of saving in database")
+    args = parser.parse_args()
+
+    poll_timeslots = PollAvailableTimeslots()
+    poll_timeslots.execute(args.print_mode)
