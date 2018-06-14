@@ -1,6 +1,7 @@
 import json
 import requests
 import datetime
+import time
 from constants import SITES_JSON
 
 
@@ -22,11 +23,12 @@ class PollAvailableTimeslots(object):
             sites = self._load_sites()
             current_date, year_after_date = self._get_from_to_dates()
             process_data = self._print_data if print_mode else self._aggregate_data
+            collection_time = int(round(time.time() * 1000))
             self._timeslot_availability = []
 
             for site in sites:
                 available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
-                process_data(site['Name'], available_timeslots)
+                process_data(site['Name'], available_timeslots, collection_time)
 
             if not print_mode:
                 # TODO: Save in database
@@ -36,10 +38,11 @@ class PollAvailableTimeslots(object):
             print("{}: {}".format(type(ex).__name__, ex))
 
 
-    def _aggregate_data(self, site_name, available_timeslots):
+    def _aggregate_data(self, site_name, available_timeslots, collection_time):
         self._timeslot_availability.append({
             'siteName': site_name,
-            'availableTimeslots': available_timeslots
+            'availableTimeslots': available_timeslots,
+            'collectionTime': collection_time
         })
 
 
