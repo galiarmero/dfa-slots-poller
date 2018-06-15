@@ -4,6 +4,7 @@ import datetime
 import time
 import argparse
 from constants import SITES_JSON
+from db_factory import DBFactory
 
 
 AVAILABLE_TIMESLOT_URI = 'https://www.passport.gov.ph/appointment/timeslot/available'
@@ -17,6 +18,7 @@ SCHEDULE_XHR_HEADERS = {
 class PollAvailableTimeslots(object):
     def __init__(self):
         self._session = requests.Session()
+        self._db = DBFactory.create()
 
 
     def execute(self, print_mode):
@@ -24,30 +26,37 @@ class PollAvailableTimeslots(object):
             sites = self._load_sites()
             current_date, year_after_date = self._get_from_to_dates()
             process_data = self._print_data if print_mode else self._aggregate_data
-            collection_time = int(round(time.time() * 1000))
+            poll_start_time = int(round(time.time() * 1000))
             self._timeslot_availability = []
 
             for site in sites:
                 available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
-                process_data(site['Name'], available_timeslots, collection_time)
+                process_data(site['Name'], available_timeslots, poll_start_time)
 
             if not print_mode:
-                # TODO: Save in database
-                print(self._timeslot_availability)
+                self._save_timeslot_availability()
 
         except Exception as ex:
             print("{}: {}".format(type(ex).__name__, ex))
 
 
-    def _aggregate_data(self, site_name, available_timeslots, collection_time):
+    def _save_timeslot_availability(self):
+        res = self._db.timeslot_availability.insert_many(self._timeslot_availability)
+        n_inserted = len(res.inserted_ids)
+
+        if n_inserted:
+            print("Successfully inserted timeslot_availability for {} sites".format(n_inserted))
+
+
+    def _aggregate_data(self, site_name, available_timeslots, poll_start_time):
         self._timeslot_availability.append({
             'siteName': site_name,
             'availableTimeslots': available_timeslots,
-            'collectionTime': collection_time
+            'pollStartTime': poll_start_time
         })
 
 
-    def _print_data(self, site_name, available_timeslots, collection_time):
+    def _print_data(self, site_name, available_timeslots, poll_start_time):
         print()
         print(site_name)
         print(' > Available ({})'.format(len(available_timeslots)))
