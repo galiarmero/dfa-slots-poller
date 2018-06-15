@@ -48,17 +48,17 @@ class PollAvailableTimeslots(object):
             print("Successfully inserted timeslot_availability for {} sites".format(n_inserted))
 
 
-    def _aggregate_data(self, site_name, available_timeslots, poll_start_time):
+    def _aggregate_data(self, site, available_timeslots, poll_start_time):
         self._timeslot_availability.append({
-            'siteName': site_name,
+            'site': site,
             'availableTimeslots': available_timeslots,
             'pollStartTime': poll_start_time
         })
 
 
-    def _print_data(self, site_name, available_timeslots, poll_start_time):
+    def _print_data(self, site, available_timeslots, poll_start_time):
         print()
-        print(site_name)
+        print(site)
         print(' > Available ({})'.format(len(available_timeslots)))
 
         if len(available_timeslots):
