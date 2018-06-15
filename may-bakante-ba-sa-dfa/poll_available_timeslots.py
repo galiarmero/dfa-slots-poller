@@ -27,7 +27,9 @@ class PollAvailableTimeslots(object):
             current_date, year_after_date = self._get_from_to_dates()
             process_data = self._print_data if print_mode else self._aggregate_data
             poll_start_time = int(round(time.time() * 1000))
+
             self._timeslot_availability = []
+            self._last_availability = self._get_last_availability_per_site()
 
             for site in sites:
                 available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
@@ -45,15 +47,16 @@ class PollAvailableTimeslots(object):
         n_inserted = len(res.inserted_ids)
 
         if n_inserted:
-            print("Successfully inserted timeslot_availability for {} sites".format(n_inserted))
+            print("Successfully inserted new timeslot_availability for {} sites".format(n_inserted))
 
 
     def _aggregate_data(self, site, available_timeslots, poll_start_time):
-        self._timeslot_availability.append({
-            'site': site,
-            'availableTimeslots': available_timeslots,
-            'pollStartTime': poll_start_time
-        })
+        if self._is_available_timeslots_changed(site, available_timeslots):
+            self._timeslot_availability.append({
+                'site': site,
+                'availableTimeslots': available_timeslots,
+                'pollStartTime': poll_start_time
+            })
 
 
     def _print_data(self, site, available_timeslots, poll_start_time):
@@ -63,6 +66,26 @@ class PollAvailableTimeslots(object):
 
         if len(available_timeslots):
             print('    {}'.format('\n    '.join([ self._millis_to_date(a) for a in available_timeslots])))
+
+
+    def _get_last_availability_per_site(self):
+        pipeline = [
+            {
+                '$sort': { 'pollStartTime': 1 }
+            },
+            {
+                '$group' : {
+                    '_id': '$site',
+                    'id': { '$last': '$_id' },
+                    'availableTimeslots': { '$last': '$availableTimeslots' }
+                }
+            }
+        ]
+        last_availability = self._db.timeslot_availability.aggregate(pipeline)
+        return { a['_id']: a['availableTimeslots'] for a in last_availability }
+
+    def _is_available_timeslots_changed(self, site, new_available_timeslots):
+        return site in self._last_availability and new_available_timeslots != self._last_availability[site]
 
 
     def _load_sites(self):
