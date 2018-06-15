@@ -35,7 +35,7 @@ class PollAvailableTimeslots(object):
                 available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
                 process_data(site['Name'], available_timeslots, poll_start_time)
 
-            if not print_mode:
+            if not print_mode and self._timeslot_availability:
                 self._save_timeslot_availability()
 
         except Exception as ex:
