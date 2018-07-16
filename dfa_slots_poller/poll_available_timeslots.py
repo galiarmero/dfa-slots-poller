@@ -84,8 +84,10 @@ class PollAvailableTimeslots(object):
         last_availability = self._db.timeslot_availability.aggregate(pipeline)
         return { a['_id']: a['availableTimeslots'] for a in last_availability }
 
+
     def _is_available_timeslots_changed(self, site, new_available_timeslots):
-        return site in self._last_availability and new_available_timeslots != self._last_availability[site]
+        return not self._last_availability or \
+                (site in self._last_availability and new_available_timeslots != self._last_availability[site])
 
 
     def _load_sites(self):
