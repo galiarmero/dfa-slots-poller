@@ -1,6 +1,6 @@
 import os
 import json
-import requests
+import cfscrape
 from constants import SITES_JSON
 
 
@@ -11,7 +11,7 @@ SITES_URI = 'https://www.passport.gov.ph/sites'
 
 class UpdateSites(object):
     def __init__(self):
-        self._session = requests.Session()
+        self._scraper = cfscrape.create_scraper()
 
 
     def execute(self):
@@ -31,7 +31,7 @@ class UpdateSites(object):
 
 
     def _get_ph_country_id(self):
-        res = self._session.post(COUNTRIES_URI, data={'regionId': APAC_REGION_ID})
+        res = self._scraper.post(COUNTRIES_URI, data={'regionId': APAC_REGION_ID})
         countries = res.json()['Countries']
         ph_country_id_list = [ country['Id'] for country in countries \
                                             if country['Name'] == 'Philippines' ]
@@ -39,6 +39,6 @@ class UpdateSites(object):
 
 
     def _get_sites(self, country_id):
-        res = self._session.post(SITES_URI, \
+        res = self._scraper.post(SITES_URI, \
                 data={'regionId': APAC_REGION_ID, 'countryId': country_id})
         return res.json()['Sites']
