@@ -1,2 +1,2 @@
-requests==2.18.4
+cfscrape==1.9.5
 pymongo==3.5.1

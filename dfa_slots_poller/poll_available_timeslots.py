@@ -1,5 +1,5 @@
 import json
-import requests
+import cfscrape
 import datetime
 import time
 import argparse
@@ -17,7 +17,7 @@ SCHEDULE_XHR_HEADERS = {
 
 class PollAvailableTimeslots(object):
     def __init__(self):
-        self._session = requests.Session()
+        self._scraper = cfscrape.create_scraper()
         self._db = DBFactory.create()
 
 
@@ -94,7 +94,7 @@ class PollAvailableTimeslots(object):
 
 
     def _get_timeslots_availability(self, from_date, to_date, site_id):
-        timeslots = self._session.post(AVAILABLE_TIMESLOT_URI, \
+        timeslots = self._scraper.post(AVAILABLE_TIMESLOT_URI, \
                 data={'fromDate': from_date, 'toDate': to_date, 'siteId': site_id, 'requestedSlots': 1}, \
                 headers=SCHEDULE_XHR_HEADERS).json()
 
