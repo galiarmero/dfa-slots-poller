@@ -20,27 +20,27 @@ class PollAvailableTimeslots(object):
         self._scraper = cfscrape.create_scraper()
 
 
-    def execute(self, print_mode):
+    def execute(self, save_db_mode):
         try:
             sites = self._load_sites()
             current_date, year_after_date = self._get_from_to_dates()
             poll_start_time = int(round(time.time() * 1000))
 
-            if print_mode:
-                process_data = self._print_data
-                self._timeslot_availability = []
-            else:
+            if save_db_mode:
                 process_data = self._aggregate_data
                 self._db = DBFactory.create()
                 self._last_availability = self._get_last_availability_per_site()
+            else:
+                process_data = self._print_data
+                self._timeslot_availability = []
 
             self._timeslot_availability = []
 
             for site in sites:
-                available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['Id'])
-                process_data(site['Name'], available_timeslots, poll_start_time)
+                available_timeslots = self._get_timeslots_availability(current_date, year_after_date, site['siteId'])
+                process_data(site['name'], available_timeslots, poll_start_time)
 
-            if not print_mode and self._timeslot_availability:
+            if save_db_mode and self._timeslot_availability:
                 self._save_timeslot_availability()
 
         except Exception as ex:
@@ -125,9 +125,9 @@ class PollAvailableTimeslots(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser( \
         description="Poll available timeslots from DFA's Passport Appointment System")
-    parser.add_argument('-p', '--print-mode', action='store_true', \
-        help="Print available timeslots in console instead of saving in database")
+    parser.add_argument('-s', '--save-db', action='store_true', \
+        help="Save available timeslots to a database instead of printing in console")
     args = parser.parse_args()
 
     poll_timeslots = PollAvailableTimeslots()
-    poll_timeslots.execute(args.print_mode)
+    poll_timeslots.execute(args.save_db)
