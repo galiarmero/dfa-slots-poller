@@ -33,7 +33,7 @@ class UpdateSites(object):
 
 
     def _get_ph_country_id(self):
-        res = self._scraper.post(COUNTRIES_URI, data={'regionId': APAC_REGION_ID})
+        res = self._scraper.post(COUNTRIES_URI, data={'regionId': APAC_REGION_ID}, verify=False)
         print("country")
         print(res.text)
         countries = res.json()['Countries']
@@ -44,7 +44,7 @@ class UpdateSites(object):
 
     def _get_sites(self, country_id):
         res = self._scraper.post(SITES_URI, \
-                data={'regionId': APAC_REGION_ID, 'countryId': country_id})
+                data={'regionId': APAC_REGION_ID, 'countryId': country_id}, verify=False)
         print("sites")
         print(res.text)
         return self._format_sites(res.json()['Sites'])

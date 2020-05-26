@@ -3,6 +3,8 @@ import cfscrape
 import datetime
 import time
 import argparse
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from constants import SITES_JSON
 from db_factory import DBFactory
 
@@ -103,7 +105,7 @@ class PollAvailableTimeslots(object):
     def _get_timeslots_availability(self, from_date, to_date, site_id):
         timeslots = self._scraper.post(AVAILABLE_TIMESLOT_URI, \
                 data={'fromDate': from_date, 'toDate': to_date, 'siteId': site_id, 'requestedSlots': 1}, \
-                headers=SCHEDULE_XHR_HEADERS).json()
+                headers=SCHEDULE_XHR_HEADERS, verify=False).json()
 
         return [ t['AppointmentDate'] for t in timeslots if t['IsAvailable'] ]
 

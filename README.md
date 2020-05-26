@@ -1,11 +1,13 @@
-# dfa-slots-poller
+# May Bakante Ba Sa DFA?
 
-Gather timeslot availability stats from DFA's [Passport Appointment System](https://www.passport.gov.ph/).
+Easily check for available timeslots from DFA's [Passport Appointment System](https://www.passport.gov.ph/).
 
 
 # Config
 
 If data is intended to be saved to a database (MongoDB), `DB_HOST`, `DB_PORT`, and `DB_NAME` environment variables should be set.
+
+Make sure packages in `may-bakante-ba-sa-dfa/requirements.txt` are installed.
 
 
 # Usage
@@ -13,19 +15,19 @@ If data is intended to be saved to a database (MongoDB), `DB_HOST`, `DB_PORT`, a
 ## Poll available timeslots
 1. Print to console the available timeslots for all DFA sites
     ```
-    python dfa_slots_poller/poll_available_timeslots.py
+    python may-bakante-ba-sa-dfa/poll_available_timeslots.py
     ```
 
 2. Save to database the available timeslots for all DFA sites. Availability for a site is only saved if numbers changed from previous poll
     ```
-    python dfa_slots_poller/poll_available_timeslots.py --save-db
+    python may-bakante-ba-sa-dfa/poll_available_timeslots.py --save-db
     ```
 
 ## Update static list of DFA sites and poll available timeslots
 
 ```bash
-python dfa_slots_poller/main.py  # print to console
-python dfa_slots_poller/main.py --save-db # save to DB 
+python may-bakante-ba-sa-dfa/main.py  # print to console
+python may-bakante-ba-sa-dfa/main.py --save-db # save to DB
 ```
 
 
